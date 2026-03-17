@@ -1,65 +1,77 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import List from '@/components/List';
+import Map from '@/components/Map';
+import { useFetchPlaces } from '@/hooks/useFetchPlaces';
 
 export default function Home() {
+  const [coordinates, setCoordinates] = useState({ lat: -16.6869, lng: -49.2648 });
+  const [bounds, setBounds] = useState<any>(null);
+  const [type, setType] = useState('restaurants');
+  const [rating, setRating] = useState('');
+
+  const { places, isLoading } = useFetchPlaces(bounds, type);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    const filtered = places?.filter((place: any) => Number(place.rating) > Number(rating));
+    setFilteredPlaces(filtered?.length ? filtered : places);
+  }, [rating, places]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCoordinates({ lat: latitude, lng: longitude });
+      }
+    );
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="h-screen w-full flex flex-col bg-stone-50 font-sans text-sky-950 overflow-hidden">
+      <Header />
+
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+
+        <div className={`
+          ${showMap ? 'hidden' : 'flex'} 
+          md:flex w-full md:w-100 lg:w-112.5 p-4 md:p-6
+          bg-stone-50 border-r border-sky-100 z-10 shadow-lg 
+          overflow-y-auto h-full
+        `}>
+          <List
+            places={filteredPlaces}
+            isLoading={isLoading}
+            type={type} setType={setType}
+            rating={rating} setRating={setRating}
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className={`
+          ${!showMap ? 'hidden' : 'flex'} 
+          md:flex flex-1 items-center justify-center relative h-full
+        `}>
+          <Map
+            setCoordinates={setCoordinates}
+            setBounds={setBounds}
+            coordinates={coordinates}
+            places={filteredPlaces}
+          />
         </div>
-      </main>
-    </div>
+
+        <button
+          onClick={() => setShowMap(!showMap)}
+          className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-100 bg-sky-950 text-white px-6 py-3 rounded-full shadow-2xl font-bold flex items-center gap-2 active:scale-95 transition-transform"
+        >
+          {showMap ? (
+            <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg> Ver Lista</>
+          ) : (
+            <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A2 2 0 013 15.487V6a2 2 0 011.106-1.789l6.522-3.26a2 2 0 011.744 0l6.522 3.26A2 2 0 0121 6v9.487a2 2 0 01-1.106 1.789L14.447 20a2 2 0 01-1.553 0L9 20z" /></svg> Ver Mapa</>
+          )}
+        </button>
+      </div>
+    </main>
   );
 }
