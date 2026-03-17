@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Travel Advisor 🗺️
 
-## Getting Started
+About the Project
 
-First, run the development server:
+This project is an advanced-level portfolio application designed to serve as a comprehensive travel guide app. It provides an interactive UI divided into two main sections: a left column rendering a list of places and a right column featuring a dynamic map.
 
+🚀 Features
+ 
+**Place Discovery:** Fetch and display lists of restaurants, tourist attractions, and hotels based on the current map view.
+
+
+**Interactive Map:** Fully interactive map interface that updates the data list automatically when the user changes the map's position (`onChange` events).
+
+
+**Smart Search:** A header navigation bar featuring an autocomplete input for destination searches.
+
+
+**User Geolocation:** Automatically fetches the user's coordinates on the initial load to display nearby places.
+
+
+**Weather Integration (Extra Level):** Displays real-time weather data for the searched cities directly on the interface.
+
+
+
+💻 Tech Stack
+
+**Framework:** Next.js (bootstrapped with `create-next-app`) 
+
+
+**Language:** TypeScript 
+
+
+**UI Library:** React 
+
+
+**Styling:** Tailwind CSS 
+
+
+**Maps Library:** `@react-google-maps/api` 
+
+
+
+## 🔌 APIs & Services
+
+**Google Maps Platform:** Utilizes the Maps JavaScript API for map rendering and navigation.
+
+
+**Travel Advisor API:** Consumed via RapidAPI to fetch the core data (restaurants, hotels, attractions).
+
+
+**Open Weather Map API:** Consumed via RapidAPI to fetch climate and weather conditions.
+
+
+
+## 🏗️ Architecture & Best Practices
+
+This project was built with a strong focus on clean code and the **DRY (Don't Repeat Yourself)** principle, ensuring that components are highly modular, atomic, and reusable.
+
+State management and side effects are decoupled from the UI components and organized into custom React Hooks, including:
+
+* A custom hook dedicated to fetching and storing the user's initial geolocation.
+
+
+* A custom hook responsible for handling the API fetches based on the current search coordinates.
+
+
+
+## ⚙️ How to Run the Project
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/saulovalin/travel-advisor.git
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Navigate to the project folder:
+```bash
+cd travel-advisor
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+3. Install dependencies:
+```bash
+npm install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+4. Create a `.env.local` file in the root directory and add your API keys:
+```env
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+NEXT_PUBLIC_RAPIDAPI_KEY=your_rapidapi_key
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+5. Run the development server:
+```bash
+npm run dev
+
+```
