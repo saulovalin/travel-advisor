@@ -1,6 +1,6 @@
 Travel Advisor 🗺️
 
-**🌍 Live Demo:** [Aceder ao Travel Advisor](https://travel-advisor-gilt.vercel.app/)
+**🌍 Live Demo:** [Visit the Live App](https://travel-advisor-gilt.vercel.app/)
 
 About the Project
 
