@@ -5,6 +5,9 @@ import Header from '@/components/Header';
 import List from '@/components/List';
 import Map from '@/components/Map';
 import { useFetchPlaces } from '@/hooks/useFetchPlaces';
+import { useJsApiLoader } from '@react-google-maps/api';
+
+const libraries: ("places")[] = ["places"];
 
 export default function Home() {
   const [coordinates, setCoordinates] = useState({ lat: -16.6869, lng: -49.2648 });
@@ -15,6 +18,12 @@ export default function Home() {
   const { places, isLoading } = useFetchPlaces(bounds, type);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [showMap, setShowMap] = useState(false);
+
+  // Carrega o script do Google Maps
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    libraries: libraries,
+  });
 
   useEffect(() => {
     const filtered = places?.filter((place: any) => Number(place.rating) > Number(rating));
@@ -29,9 +38,25 @@ export default function Home() {
     );
   }, []);
 
+  if (loadError) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-stone-50 text-red-500">
+        Erro ao carregar o Google Maps. Verifique sua API Key.
+      </div>
+    );
+  }
+
+  if (!isLoaded) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-stone-50 text-sky-950 font-bold">
+        Carregando Travel Advisor...
+      </div>
+    );
+  }
+
   return (
     <main className="h-screen w-full flex flex-col bg-stone-50 font-sans text-sky-950 overflow-hidden">
-      <Header />
+      <Header setCoordinates={setCoordinates} />
 
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
 

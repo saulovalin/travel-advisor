@@ -1,8 +1,34 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Autocomplete } from '@react-google-maps/api';
 
-export default function Header() {
+interface HeaderProps {
+  setCoordinates?: (coords: { lat: number; lng: number }) => void;
+}
+
+export default function Header({ setCoordinates }: HeaderProps) {
+  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+
+  const onLoad = (autoC: google.maps.places.Autocomplete) => setAutocomplete(autoC);
+
+  const onPlaceChanged = () => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+      
+      if (place.geometry && place.geometry.location) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        
+        if (setCoordinates) {
+          setCoordinates({ lat, lng });
+        }
+      }
+    } else {
+      console.log('Autocomplete is not loaded yet!');
+    }
+  };
+
   return (
     <header className="bg-sky-950 px-8 py-3 shadow-lg flex flex-col md:flex-row justify-between items-center z-20 relative border-b border-sky-900/40">
 
@@ -22,16 +48,18 @@ export default function Header() {
           Explore o mundo
         </span>
         
-        <div className="relative bg-white/5 border border-white/10 hover:border-white/20 transition-all rounded-full px-5 py-2.5 flex items-center w-64 md:w-80 shadow-sm focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500 group">
-          <svg className="w-4 h-4 text-sky-400 group-focus-within:text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input 
-            type="text" 
-            placeholder="Busque uma cidade..." 
-            className="ml-3 outline-none bg-transparent w-full text-sm text-white focus:text-sky-950 placeholder-sky-400/60"
-          />
-        </div>
+        <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+          <div className="relative bg-white/5 border border-white/10 hover:border-white/20 transition-all rounded-full px-5 py-2.5 flex items-center w-64 md:w-80 shadow-sm focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500 group">
+            <svg className="w-4 h-4 text-sky-400 group-focus-within:text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Busque uma cidade..." 
+              className="ml-3 outline-none bg-transparent w-full text-sm text-white focus:text-sky-950 placeholder-sky-400/60"
+            />
+          </div>
+        </Autocomplete>
       </div>
     </header>
   );
