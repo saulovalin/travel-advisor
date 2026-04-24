@@ -19,7 +19,6 @@ export default function Home() {
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [showMap, setShowMap] = useState(false);
 
-  // Carrega o script do Google Maps
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     libraries: libraries,
@@ -49,7 +48,7 @@ export default function Home() {
   if (!isLoaded) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-stone-50 text-sky-950 font-bold">
-        Carregando Travel Advisor...
+        Loading Travel Advisor...
       </div>
     );
   }

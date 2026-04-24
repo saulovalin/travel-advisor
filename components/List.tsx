@@ -4,30 +4,30 @@ export default function List({ places, isLoading, type, setType, rating, setRati
   return (
     <div className="flex flex-col gap-6">
       <h2 className="text-3xl font-extrabold text-sky-950 tracking-tighter">
-        Descubra lugares incríveis
+        Discover incredible places
       </h2>
 
       <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 p-4 bg-white/50 backdrop-blur-sm rounded-2xl shadow-sm border border-white/80">
         <div className="flex flex-col">
-          <label className="text-[10px] font-bold text-sky-700 uppercase mb-1">O que buscar?</label>
+          <label className="text-[10px] font-bold text-sky-700 uppercase mb-1">What to look for?</label>
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
             className="w-full border border-stone-200 bg-white py-2 px-3 rounded-lg text-sm"
           >
-            <option value="restaurants">Restaurantes</option>
-            <option value="hotels">Hotéis</option>
-            <option value="attractions">Atrações</option>
+            <option value="restaurants">Restaurants</option>
+            <option value="hotels">Hotels</option>
+            <option value="attractions">Attractions</option>
           </select>
         </div>
 
         <div className="flex flex-col">
-          <label className="text-[10px] font-bold text-sky-700 uppercase tracking-wider mb-1">Avaliação mínima</label>
+          <label className="text-[10px] font-bold text-sky-700 uppercase tracking-wider mb-1">Minimum rating</label>
           <select
             value={rating}
             onChange={(e) => setRating(e.target.value)}
             className="w-full border border-stone-200 bg-white py-2 px-3 rounded-lg text-sm">
-            <option value="">Todas</option>
+            <option value="">All</option>
             <option value="3">⭐⭐⭐+ (3.0)</option>
             <option value="4">⭐⭐⭐⭐+ (4.0)</option>
             <option value="4.5">⭐⭐⭐⭐⭐ (4.5)</option>
@@ -53,7 +53,7 @@ export default function List({ places, isLoading, type, setType, rating, setRati
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-stone-400 font-medium">
-                    Sem imagem disponível
+                    No image available
                   </div>
                 )}
               </div>
@@ -71,7 +71,7 @@ export default function List({ places, isLoading, type, setType, rating, setRati
                     </span>
                   </div>
                   <span className="text-xs font-semibold text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
-                    {place.num_reviews} avaliações
+                    {place.num_reviews} reviews
                   </span>
                 </div>
 

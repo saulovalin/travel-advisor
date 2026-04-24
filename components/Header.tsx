@@ -45,7 +45,7 @@ export default function Header({ setCoordinates }: HeaderProps) {
 
       <div className="flex items-center gap-8">
         <span className="hidden lg:block text-sky-200/70 font-medium tracking-wide text-sm uppercase">
-          Explore o mundo
+          Explore the world
         </span>
         
         <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
@@ -55,7 +55,7 @@ export default function Header({ setCoordinates }: HeaderProps) {
             </svg>
             <input 
               type="text" 
-              placeholder="Busque uma cidade..." 
+              placeholder="Find a city..." 
               className="ml-3 outline-none bg-transparent w-full text-sm text-white focus:text-sky-950 placeholder-sky-400/60"
             />
           </div>
